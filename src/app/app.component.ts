@@ -4,7 +4,7 @@ import { EmployeeHeaderComponent } from "./employee/employee-header/employee-hea
 
 @Component({
   selector: 'app-root',
-  imports: [ EmployeeHeaderComponent],
+  imports: [ RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

@@ -6,7 +6,7 @@ import { EmployeeRoutingModule } from './employee-routing.module';
 
 @NgModule({
   declarations: [],
-  imports: [
+  imports: [  
     CommonModule,
     EmployeeRoutingModule
   ]
