@@ -1,0 +1,39 @@
+<div class="p-4">
+
+<button (click)="openNewComponent()" class="btn btn-primary float-end" >Add</button>
+
+<table class="table-grid mt-4">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th>Salary</th>
+      <th>Gender</th>
+      <th>DOB</th>
+      <th>Department</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let employee of employees">
+      <td>{{ employee.name }}</td>
+      <td>{{ employee.address }}</td>
+      <td>{{ employee.salary }}</td>
+      <td>{{ employee.gender }}</td>
+      <td>{{ employee.dob | date:'dd-MM-yyyy' }}</td>
+      <td>{{ employee.department.name  }}</td>
+      <td>
+        <button class="btn btn-primary">
+            <i class="fa-solid fa-pen-to-square"></i>
+        </button>&nbsp;
+        <button class="btn btn-danger ">
+            <i class="fa-solid fa-trash"></i>
+        </button>
+
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
