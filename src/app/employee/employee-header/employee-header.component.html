@@ -1,6 +1,6 @@
 <div class="p-4">
 
-<button (click)="openNewComponent()" class="btn btn-primary float-end" >Add</button>
+<button (click)="openRegEmployee()" class="btn btn-primary float-end mb-2" >Add</button>
 
 <table class="table-grid mt-4">
   <thead>
@@ -26,7 +26,7 @@
         <button class="btn btn-primary">
             <i class="fa-solid fa-pen-to-square"></i>
         </button>&nbsp;
-        <button class="btn btn-danger ">
+        <button class="btn btn-danger" (click)="delete(employee.id)">
             <i class="fa-solid fa-trash"></i>
         </button>
 

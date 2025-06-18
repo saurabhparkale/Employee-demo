@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-reg-employee',
@@ -15,7 +17,9 @@ export class RegEmployeeComponent implements OnInit {
   employeeForm!: FormGroup;
   departments: any[] = [];
 
-  constructor(private fb: FormBuilder, private http: HttpClient){}
+  constructor(private fb: FormBuilder, 
+    private router: Router,
+    private http: HttpClient){}
 
   ngOnInit(){
     this.departmentData()
@@ -42,7 +46,9 @@ export class RegEmployeeComponent implements OnInit {
     if(this.employeeForm.valid){
       console.log(this.employeeForm.value);
       this.http.post("https://localhost:7124/api/Employee", this.employeeForm.value)
-        .subscribe((res:any) =>alert(res.message));
+        .subscribe((res:any) =>
+          Swal.fire("SweetAlert2 is working!"));
+        // this.router.navigate(['']);
 
     } else {
       console.log("Form is invalid.");
