@@ -1,40 +1,59 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-reg-employee',
   imports: [FormsModule,CommonModule,ReactiveFormsModule,HttpClientModule],
   standalone:true,
+  providers:[DatePipe],
   templateUrl: './reg-employee.component.html',
   styleUrl: './reg-employee.component.css'
 })
 export class RegEmployeeComponent implements OnInit {
+
+  @Input() data: any
 
   employeeForm!: FormGroup;
   departments: any[] = [];
 
   constructor(private fb: FormBuilder, 
     private router: Router,
-    private http: HttpClient){}
+    private datePipe: DatePipe,
+    private modalService: NgbModal,
+    private http: HttpClient){
+      this.employeeForm = this.fb.group({ 
+        id: [null], 
+        name: ['', [Validators.required]],
+        address: ['', [Validators.required]],
+        salary: ['', [Validators.required, Validators.min(0)]],
+        gender: ['Male', [Validators.required]],
+        dob: [null, [Validators.required]],
+        departmentId: [null, [Validators.required]],
+    });
+  }
 
   ngOnInit(){
     this.departmentData()
 
-    this.employeeForm = this.fb.group({ 
-      name: ['', [Validators.required]],
-      address: ['', [Validators.required]],
-      salary: ['', [Validators.required, Validators.min(0)]],
-      gender: ['Male', [Validators.required]],
-      dob: [null, [Validators.required]],
-      departmentId: [null, [Validators.required]],
-    });
+    if (typeof this.data != "undefined") {
 
-    
-    
+      const dobFormatted = this.datePipe.transform(this.data.dob, 'yyyy-MM-dd');
+
+      this.employeeForm.patchValue({
+        id: this.data.id,
+        name: this.data.name,
+        address: this.data.address,
+        salary: this.data.salary,
+        gender: this.data.gender,
+        dob: dobFormatted,
+        departmentId: this.data.departmentId,
+      })
+    }  
   }
 
   departmentData(){
@@ -43,15 +62,28 @@ export class RegEmployeeComponent implements OnInit {
   }
 
   onSave(){
-    if(this.employeeForm.valid){
-      console.log(this.employeeForm.value);
-      this.http.post("https://localhost:7124/api/Employee", this.employeeForm.value)
+    if( typeof this.data == "undefined")
+      {
+        if(this.employeeForm.valid)
+          {
+            this.http.post("https://localhost:7124/api/Employee", this.employeeForm.value)
+            .subscribe((res:any) =>
+            Swal.fire("Record Save Successfully!"));
+          } 
+      }
+    else
+      {  
+        this.http.put("https://localhost:7124/api/Employee"+'/'+this.employeeForm.value.id ,this.employeeForm.value)
         .subscribe((res:any) =>
-          Swal.fire("SweetAlert2 is working!"));
-        // this.router.navigate(['']);
-
-    } else {
-      console.log("Form is invalid.");
-    }
+        Swal.fire("Record Update Successfully!"));
+        this.modalService.dismissAll('Click');
+      }
   }
+
+  backToEmployee() {
+    this.router.navigate(['']);
+  }
+
+  get f() {return this.employeeForm.controls; }
+  
 }

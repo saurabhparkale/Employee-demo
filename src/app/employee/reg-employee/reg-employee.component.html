@@ -1,5 +1,7 @@
 
-<h2>Employee Form</h2>
+<div class="p-1">
+<button (click)="backToEmployee()" class="btn-info" *ngIf="this.data.id == 0">Back</button>
+</div>
 
 <form [formGroup]="employeeForm" (ngSubmit)="onSave()">
 <div class="p-4">
@@ -7,6 +9,12 @@
         <div class="col-md-6">
             <label for="name">Name</label>
             <input type="text" class="form-control" formControlName="name" />
+           <div class="text-danger"
+              *ngIf="f['name'].invalid && (f['name'].dirty || f['name'].touched)">
+              <div *ngIf="f['name'].errors?.['required']">
+                Name is required.
+              </div>
+            </div>
         </div>
     </div>
 
@@ -28,6 +36,8 @@
             <input class="form-control" formControlName="dob" type="date" />
         </div>
     </div>
+
+
   <label>Gender</label><br>
   <input id="male" formControlName="gender" type="radio" value="Male" />&nbsp;<label for="male">Male</label>&nbsp;
   <input id="female" formControlName="gender" type="radio" value="Female" />&nbsp;<label for="female">Female</label>
@@ -36,8 +46,8 @@
   <br/>
 
   <div class="row">
-  <div class="col-md-6">
-    <label>Department</label>
+  <div class="col-md-12">
+    <!-- <label>Department</label> -->
     <select formControlName="departmentId">
       <option [ngValue]="null">Select department</option>
       <option *ngFor="let department of departments" [ngValue]="department.id">
