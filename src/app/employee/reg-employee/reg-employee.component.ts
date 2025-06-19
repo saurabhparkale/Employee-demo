@@ -28,10 +28,10 @@ export class RegEmployeeComponent implements OnInit {
     private http: HttpClient){
       this.employeeForm = this.fb.group({ 
         id: [null], 
-        name: ['', [Validators.required]],
-        address: ['', [Validators.required]],
+        name: ['', [Validators.required,Validators.maxLength(30)]],
+        address: ['', [Validators.required,Validators.maxLength(50)]],
         salary: ['', [Validators.required, Validators.min(0)]],
-        gender: ['Male', [Validators.required]],
+        gender: ['', [Validators.required]],
         dob: [null, [Validators.required]],
         departmentId: [null, [Validators.required]],
     });
@@ -69,6 +69,7 @@ export class RegEmployeeComponent implements OnInit {
             this.http.post("https://localhost:7124/api/Employee", this.employeeForm.value)
             .subscribe((res:any) =>
             Swal.fire("Record Save Successfully!"));
+            this.router.navigate(['']);
           } 
       }
     else
