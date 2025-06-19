@@ -1,18 +1,22 @@
 
-<div class="p-1">
-<button (click)="backToEmployee()" class="btn-info" *ngIf="this.data.id == 0">Back</button>
-</div>
+<!-- <div class="p-1">
+<button (click)="backToEmployee()" class="btn-info" >Back</button>
+</div> -->
+<h3 style="text-align: center; color:red ;font-weight: bold;">Employee Registration </h3>
 
 <form [formGroup]="employeeForm" (ngSubmit)="onSave()">
 <div class="p-4">
     <div class="row">
         <div class="col-md-6">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" formControlName="name" />
+            <label style="font-weight: bold;" for="name">Name</label>
+            <input type="text" class="form-control"  formControlName="name" />
            <div class="text-danger"
               *ngIf="f['name'].invalid && (f['name'].dirty || f['name'].touched)">
               <div *ngIf="f['name'].errors?.['required']">
                 Name is required.
+              </div>
+              <div *ngIf="f['name'].errors?.['maxlength']">
+                Name Should be 30 Character.
               </div>
             </div>
         </div>
@@ -20,47 +24,72 @@
 
     <div class="row">
         <div class="col-md-12">
-            <label for="address">Address</label>
+            <label style="font-weight: bold;" for="address">Address</label>
             <textarea type="text"  class="form-control" formControlName="address" ></textarea>
+             <div class="text-danger"
+                *ngIf="f['address'].invalid && (f['address'].dirty || f['address'].touched)">
+              <div *ngIf="f['address'].errors?.['required']">
+                Address is required.
+              </div>
+              <div *ngIf="f['address'].errors?.['maxlength']">
+                  Address Should be 50 Character.
+              </div>
+            </div>
         </div>
-    </div>
+    </div> 
   
     <div class="row">
         <div class="col-md-6">
-            <label for="salary">Salary</label>
+            <label style="font-weight: bold;"for="salary">Salary</label>
             <input type="number" class="form-control" formControlName="salary" />
+             <div class="text-danger"
+                *ngIf="f['salary'].invalid && (f['salary'].dirty || f['salary'].touched)">
+              <div *ngIf="f['salary'].errors?.['required']">
+                Salary is required.
+              </div>
+            </div>
         </div>
-
+       
         <div class="col-md-6">
-            <label>Date of Birth</label>
+            <label style="font-weight: bold;">Date of Birth</label>
             <input class="form-control" formControlName="dob" type="date" />
+            <div class="text-danger"
+                *ngIf="f['dob'].invalid && (f['dob'].dirty || f['dob'].touched)">
+              <div *ngIf="f['dob'].errors?.['required']">
+                Dob is required.
+              </div>
+           </div>
         </div>
     </div>
 
-
-  <label>Gender</label><br>
-  <input id="male" formControlName="gender" type="radio" value="Male" />&nbsp;<label for="male">Male</label>&nbsp;
-  <input id="female" formControlName="gender" type="radio" value="Female" />&nbsp;<label for="female">Female</label>
-
-  <br/>
-  <br/>
-
-  <div class="row">
-  <div class="col-md-12">
-    <!-- <label>Department</label> -->
-    <select formControlName="departmentId">
-      <option [ngValue]="null">Select department</option>
-      <option *ngFor="let department of departments" [ngValue]="department.id">
-        {{ department.name }}
-      </option>
-    </select>
-  </div>
-</div>
-
-  
-
-  <br/>
-
+      <label style="font-weight: bold;">Gender</label><br>
+        <input id="male" formControlName="gender" type="radio" value="Male" />&nbsp;<label for="male">Male</label>&nbsp;
+        <input id="female" formControlName="gender" type="radio" value="Female" />&nbsp;<label for="female">Female</label>
+            <div class="text-danger"
+              *ngIf="f['gender'].invalid && (f['gender'].dirty || f['gender'].touched)">
+              <div *ngIf="f['gender'].errors?.['required']">
+                Gender is required.
+              </div>
+            </div>
+    <br><br>
+    <div class="row">
+      <div class="col-md-12">
+        <!-- <label>Department</label> -->
+        <select formControlName="departmentId">
+          <option [ngValue]="null">Select department</option>
+          <option *ngFor="let department of departments" [ngValue]="department.id">
+            {{ department.name }}
+          </option>
+        </select>
+        <div class="text-danger"
+          *ngIf="f['departmentId'].invalid && (f['departmentId'].dirty || f['departmentId'].touched)">
+          <div *ngIf="f['departmentId'].errors?.['required']">
+            Department is required.
+          </div>
+        </div>
+      </div>
+    </div>
+<br>
   <button type="submit" class="btn btn-primary">Save</button>
   </div>
 </form>
