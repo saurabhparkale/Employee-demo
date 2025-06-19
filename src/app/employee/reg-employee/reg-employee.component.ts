@@ -61,16 +61,27 @@ export class RegEmployeeComponent implements OnInit {
       .subscribe((res) => this.departments = res);
   }
 
+  
   onSave(){
     if( typeof this.data == "undefined")
-      {
+    {
         if(this.employeeForm.valid)
           {
-            this.http.post("https://localhost:7124/api/Employee", this.employeeForm.value)
-            .subscribe((res:any) =>
-            Swal.fire("Record Save Successfully!"));
-            this.router.navigate(['']);
+            this.http.post('https://localhost:7124/api/Employee', this.employeeForm.value).subscribe({
+  next: (res) => {
+    Swal.fire("Success", "Employee added successfully!", "success");
+    this.router.navigate(['']);
+  },
+  error: (err) => {
+    if (err.status === 409) {
+      Swal.fire("Error", err.error.message, "error"); // shows message from API
+    } else {
+      Swal.fire("Error", "Something went wrong!", "error");
+    }
+  }
+});
           } 
+
       }
     else
       {  
