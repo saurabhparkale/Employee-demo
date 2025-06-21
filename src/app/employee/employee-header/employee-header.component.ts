@@ -28,7 +28,7 @@ constructor(private router: Router,
 
   getEmployeeData(){
     this.http.get<Employee>("https://localhost:7124/api/Employee")
-      .subscribe((res:any) => this.employees = res.employeeData);
+      .subscribe((res:any) => this.employees = res);
   }
 
   openRegEmployee() {

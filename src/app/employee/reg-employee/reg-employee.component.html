@@ -1,14 +1,11 @@
 
-<!-- <div class="p-1">
-<button (click)="backToEmployee()" class="btn-info" >Back</button>
-</div> -->
 <h3 style="text-align: center; color:red ;font-weight: bold;">Employee Registration </h3>
 
 <form [formGroup]="employeeForm" (ngSubmit)="onSave()">
 <div class="p-4">
     <div class="row">
         <div class="col-md-6">
-            <label style="font-weight: bold;" for="name">Name</label>
+            <label >Name</label>
             <input type="text" class="form-control"  formControlName="name" />
            <div class="text-danger"
               *ngIf="f['name'].invalid && (f['name'].dirty || f['name'].touched)">
@@ -24,7 +21,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <label style="font-weight: bold;" for="address">Address</label>
+            <label  >Address</label>
             <textarea type="text"  class="form-control" formControlName="address" ></textarea>
              <div class="text-danger"
                 *ngIf="f['address'].invalid && (f['address'].dirty || f['address'].touched)">
@@ -40,7 +37,7 @@
   
     <div class="row">
         <div class="col-md-6">
-            <label style="font-weight: bold;"for="salary">Salary</label>
+            <label >Salary</label>
             <input type="number" class="form-control" formControlName="salary" />
              <div class="text-danger"
                 *ngIf="f['salary'].invalid && (f['salary'].dirty || f['salary'].touched)">
@@ -51,7 +48,7 @@
         </div>
        
         <div class="col-md-6">
-            <label style="font-weight: bold;">Date of Birth</label>
+            <label >Date of Birth</label>
             <input class="form-control" formControlName="dob" type="date" />
             <div class="text-danger"
                 *ngIf="f['dob'].invalid && (f['dob'].dirty || f['dob'].touched)">
@@ -62,20 +59,24 @@
         </div>
     </div>
 
-      <label style="font-weight: bold;">Gender</label><br>
-        <input id="male" formControlName="gender" type="radio" value="Male" />&nbsp;<label for="male">Male</label>&nbsp;
-        <input id="female" formControlName="gender" type="radio" value="Female" />&nbsp;<label for="female">Female</label>
+
+
+    <div class="row">
+      <div class="col-md-6">
+        <label >Gender</label><br>
+          <input id="male" formControlName="gender" type="radio" value="Male" />&nbsp;<label for="male">Male</label>&nbsp;
+          <input id="female" formControlName="gender" type="radio" value="Female" />&nbsp;<label for="female">Female</label>
             <div class="text-danger"
               *ngIf="f['gender'].invalid && (f['gender'].dirty || f['gender'].touched)">
               <div *ngIf="f['gender'].errors?.['required']">
                 Gender is required.
               </div>
             </div>
-    <br><br>
-    <div class="row">
-      <div class="col-md-12">
-        <!-- <label>Department</label> -->
-        <select formControlName="departmentId">
+      </div>        
+    
+      
+      <div class="col-md-6 mt-4">
+        <select formControlName="departmentId" class="form-control" >
           <option [ngValue]="null">Select department</option>
           <option *ngFor="let department of departments" [ngValue]="department.id">
             {{ department.name }}
@@ -89,7 +90,80 @@
         </div>
       </div>
     </div>
-<br>
+
+
+
+    <div class="row">
+      <div class="col-md-4">
+            <label >In Time</label>
+            <input type="time" class="form-control" formControlName="inTime" (input)="calculateTotalHrs()" />
+             <div class="text-danger"
+                *ngIf="f['inTime'].invalid && (f['inTime'].dirty || f['inTime'].touched)">
+              <div *ngIf="f['inTime'].errors?.['required']">
+                In Time is required.
+              </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <label >Out Time</label>
+            <input type="time" class="form-control" formControlName="outTime" (input)="calculateTotalHrs()"/>
+             <div class="text-danger"
+                *ngIf="f['outTime'].invalid && (f['outTime'].dirty || f['outTime'].touched)">
+              <div *ngIf="f['outTime'].errors?.['required']">
+                Out Time is required.
+              </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <label >Total Hours</label>
+            <input type="text" class="form-control" formControlName="totalHrs" />
+             <div class="text-danger"
+                *ngIf="f['totalHrs'].invalid && (f['totalHrs'].dirty || f['totalHrs'].touched)">
+              <div *ngIf="f['totalHrs'].errors?.['required']">
+                Total Hours is required.
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+
+    <div class="row">
+      <div class="col-md-6">
+        <select formControlName="reportingId" class="form-control" >
+          <option [ngValue]="null">Select Reporting</option>
+          <option *ngFor="let report of reporting" [ngValue]="report.id">
+            {{ report.name }}
+          </option>
+        </select>
+        <div class="text-danger"
+          *ngIf="f['reportingId'].invalid && (f['reportingId'].dirty || f['reportingId'].touched)">
+          <div *ngIf="f['reportingId'].errors?.['required']">
+            Reporting is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <select formControlName="roleType" class="form-control" >
+          <option [ngValue]="null">Select Role Type</option>
+          <option *ngFor="let roleType of roleTypes" [ngValue]="roleType.name">
+            {{ roleType.name }}
+          </option>
+        </select>
+        <div class="text-danger"
+          *ngIf="f['roleType'].invalid && (f['roleType'].dirty || f['roleType'].touched)">
+          <div *ngIf="f['roleType'].errors?.['required']">
+            Role Type is required.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <br>
+
   <button type="submit" class="btn btn-primary">Save</button>
   </div>
 </form>

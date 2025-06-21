@@ -1,5 +1,5 @@
 <div class="p-4">
-
+<h2 style="text-align: center; font-weight: bold; color: chocolate;">Employee Detail</h2>
 <button (click)="openRegEmployee()" class="btn btn-primary float-end mb-2" >Add</button>
 
 <table class="table-grid mt-4">
@@ -11,6 +11,11 @@
       <th>Gender</th>
       <th>DOB</th>
       <th>Department</th>
+      <th>In Time</th>
+      <th>Out Time</th>
+      <th>Total Hrs</th>
+      <th>Reporting</th>
+      <th>Role Type</th>
       <th>Action</th>
     </tr>
   </thead>
@@ -21,7 +26,12 @@
       <td>{{ employee.salary }}</td>
       <td>{{ employee.gender }}</td>
       <td>{{ employee.dob | date:'dd-MM-yyyy' }}</td>
-      <td>{{ employee.department.name  }}</td>
+      <td>{{ employee.departmentName}}</td>
+      <td>{{ employee.inTime}}</td>
+      <td>{{ employee.outTime}}</td>
+      <td>{{ employee.totalHrs}}</td>
+      <td>{{ employee.reportingName}}</td>
+      <td>{{ employee.roleType}}</td>
       <td>
         <button class="btn btn-primary" (click)="Edit(employee,update)">
             <i class="fa-solid fa-pen-to-square"></i>
