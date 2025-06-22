@@ -3,20 +3,24 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Employee } from '../employee';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import Swal from 'sweetalert2';
 import { ModalDismissReasons, NgbModal, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { RegEmployeeComponent } from '../reg-employee/reg-employee.component';
+import Swal from 'sweetalert2';
+import { EmployeeSearchPipe } from '../employee-search.pipe';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-employee-header',
-  imports: [CommonModule,HttpClientModule,NgbNavModule,RegEmployeeComponent],
+  standalone : true,
+  imports: [CommonModule,HttpClientModule,NgbNavModule,RegEmployeeComponent,EmployeeSearchPipe,FormsModule],
   templateUrl: './employee-header.component.html',
   styleUrl: './employee-header.component.css'
 })
 export class EmployeeHeaderComponent implements OnInit{
 
   employees:Employee[] = [];
+  searchText: string = '';
 
 constructor(private router: Router,
   private  http:HttpClient,
@@ -35,32 +39,7 @@ constructor(private router: Router,
     this.router.navigate(['header/reg']);
   }
 
-  delete(id: number) {
-    const url = `https://localhost:7124/api/Employee/${id}`;
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
-    }).then((result:any) => {
-      if (result.isConfirmed) {
-        this.http.delete(url).subscribe({
-        next: (res) => {
-          Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success",
-          timer: 1500
-        });
-      this.getEmployeeData()
-    },
-  });       
-  }
-});  
-}
+  
 
 
   closeResult = ''
@@ -89,5 +68,46 @@ constructor(private router: Router,
       return `with: ${reason}`;
     }
   }
+
+  removeDuplicateName()
+  {
+    const seen = new Set();
+    this.employees = this.employees.filter((emp:any) => {
+      if(seen.has(emp.name)){
+        return false;
+      }
+      else{
+        seen.add(emp.name);
+        return true;
+      }
+    })
+  }
+
+  delete(id: number) {
+    const url = `https://localhost:7124/api/Employee/${id}`;
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result:any) => {
+      if (result.isConfirmed) {
+        this.http.delete(url).subscribe({
+        next: (res) => {
+          Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success",
+          timer: 1500
+        });
+          this.getEmployeeData()
+        },
+      });       
+    }
+  });  
+}
 
 }
