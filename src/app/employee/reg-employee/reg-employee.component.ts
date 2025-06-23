@@ -19,7 +19,10 @@ export class RegEmployeeComponent implements OnInit {
   @Input() data: any
 
   employeeForm!: FormGroup;
+
   departments: any[] = [];
+  reporting : any[] = [];
+  roleTypes : any[] = [{id: 1 ,name:'Manager'},{id:2 ,name:'Supervisior'},{id:3,name:'Lead'}];
 
   constructor(private fb: FormBuilder, 
     private router: Router,
@@ -32,13 +35,20 @@ export class RegEmployeeComponent implements OnInit {
         address: ['', [Validators.required,Validators.maxLength(50)]],
         salary: ['', [Validators.required, Validators.min(0)]],
         gender: ['', [Validators.required]],
-        dob: [null, [Validators.required]],
+        dob: [null, [Validators.required]],    
         departmentId: [null, [Validators.required]],
+        inTime : [null,[Validators.required]],
+        outTime : [null,[Validators.required]],
+        totalHrs : [null],
+        reportingId: [null, [Validators.required]],
+        roleType : [null,[Validators.required]]
     });
   }
 
   ngOnInit(){
     this.departmentData()
+    this.reportingData()
+    this.roleTypeData()
 
     if (typeof this.data != "undefined") {
 
@@ -52,6 +62,11 @@ export class RegEmployeeComponent implements OnInit {
         gender: this.data.gender,
         dob: dobFormatted,
         departmentId: this.data.departmentId,
+        inTime : this.data.inTime,
+        outTime : this.data.outTime,
+        totalHrs : this.data.totalHrs,
+        reportingId : this.data.reportingId,
+        roleType : this.data.roleType
       })
     }  
   }
@@ -61,27 +76,58 @@ export class RegEmployeeComponent implements OnInit {
       .subscribe((res) => this.departments = res);
   }
 
-  
+  reportingData(){
+    this.http.get<any[]>("https://localhost:7124/api/Employee/employeeList")
+      .subscribe((res) => this.reporting = res);
+  }
+
+  roleTypeData(){
+    this.http.get<any[]>("")
+      .subscribe((res) => this.roleTypes = res);
+  }
+
+  result: string = '';
+  calculateTotalHrs()
+  {
+    const inTime = this.employeeForm.value.inTime;
+    const outTime = this.employeeForm.value.outTime;
+
+    if (inTime && outTime) {
+      const [inH, inM] = inTime.split(':').map(Number);
+      const [outH, outM] = outTime.split(':').map(Number);
+
+      const inDate = new Date();
+      const outDate = new Date();
+
+      inDate.setHours(inH, inM, 0);
+      outDate.setHours(outH, outM, 0);
+
+      const diffMs = outDate.getTime() - inDate.getTime();
+
+      if (diffMs < 0) {
+        this.result = 'Invalid time range';
+        return;
+      }
+
+      const hours = Math.floor(diffMs / (1000 * 60 * 60));
+      const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+      this.result = `${hours} hours ${minutes} minutes`;
+    }
+
+    this.employeeForm.patchValue({ totalHrs: this.result });
+  }
+
   onSave(){
     if( typeof this.data == "undefined")
-    {
+      {
         if(this.employeeForm.valid)
           {
-            this.http.post('https://localhost:7124/api/Employee', this.employeeForm.value).subscribe({
-  next: (res) => {
-    Swal.fire("Success", "Employee added successfully!", "success");
-    this.router.navigate(['']);
-  },
-  error: (err) => {
-    if (err.status === 409) {
-      Swal.fire("Error", err.error.message, "error"); // shows message from API
-    } else {
-      Swal.fire("Error", "Something went wrong!", "error");
-    }
-  }
-});
+            this.http.post("https://localhost:7124/api/Employee", this.employeeForm.value)
+            .subscribe((res:any) =>
+            Swal.fire("Record Save Successfully!"));
+            // this.router.navigate(['']);
           } 
-
       }
     else
       {  

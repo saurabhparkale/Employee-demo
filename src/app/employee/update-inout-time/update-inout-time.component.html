@@ -1,0 +1,51 @@
+<div class="container">
+    <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()" *ngIf="showForm">
+
+        <div class="row">
+            <div class="col-md-6">
+                <label >Name</label>
+                <input type="text" class="form-control"  formControlName="name" />        
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <label >In Time</label>
+                <input type="time" class="form-control" formControlName="inTime" (input)="calculateTotalHrs()" />
+                <div class="text-danger"
+                    *ngIf="f['inTime'].invalid && (f['inTime'].dirty || f['inTime'].touched)">
+                    <div *ngIf="f['inTime'].errors?.['required']">
+                        In Time is required.
+                    </div>
+                </div>     
+            </div>
+
+            <div class="col-md-4">
+                <label >Out Time</label>
+                <input type="time" class="form-control" formControlName="outTime" (input)="calculateTotalHrs()"/>
+                <div class="text-danger"
+                    *ngIf="f['outTime'].invalid && (f['outTime'].dirty || f['outTime'].touched)">
+                    <div *ngIf="f['outTime'].errors?.['required']">
+                        Out Time is required.
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <label >Total Hours</label>
+                <input type="text" class="form-control" formControlName="totalHrs" />
+                <div class="text-danger"
+                    *ngIf="f['totalHrs'].invalid && (f['totalHrs'].dirty || f['totalHrs'].touched)">
+                    <div *ngIf="f['totalHrs'].errors?.['required']">
+                        Total Hours is required.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <button type="submit" class="btn btn-primary">Save</button>
+
+    </form>
+
+</div>
