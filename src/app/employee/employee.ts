@@ -5,6 +5,13 @@ export interface Employee {
     salary:number,
     gender:string,
     dob:string,
+    departmentName : string
+    inTime : string
+    outTime : string
+    totalHrs : string
+    reportingName : string
+    roleType : string
+ 
     department:Department,
 }
 
