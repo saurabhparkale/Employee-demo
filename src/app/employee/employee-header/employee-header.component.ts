@@ -8,12 +8,14 @@ import { RegEmployeeComponent } from '../reg-employee/reg-employee.component';
 import Swal from 'sweetalert2';
 import { EmployeeSearchPipe } from '../employee-search.pipe';
 import { FormsModule } from '@angular/forms';
+import { UpdateInoutTimeComponent } from '../update-inout-time/update-inout-time.component';
+import { EmployeeService } from '../employee.service';
 
 
 @Component({
   selector: 'app-employee-header',
   standalone : true,
-  imports: [CommonModule,HttpClientModule,NgbNavModule,RegEmployeeComponent,EmployeeSearchPipe,FormsModule],
+  imports: [CommonModule,HttpClientModule,NgbNavModule,RegEmployeeComponent,EmployeeSearchPipe,FormsModule,UpdateInoutTimeComponent],
   templateUrl: './employee-header.component.html',
   styleUrl: './employee-header.component.css'
 })
@@ -24,6 +26,7 @@ export class EmployeeHeaderComponent implements OnInit{
 
 constructor(private router: Router,
   private  http:HttpClient,
+  private employeeService : EmployeeService,
   private modalService: NgbModal) {}
 
   ngOnInit(): void {
@@ -39,7 +42,9 @@ constructor(private router: Router,
     this.router.navigate(['header/reg']);
   }
 
-  
+  onUpdateClick(emp : any){
+    this.employeeService.selectTime(emp);
+  }
 
 
   closeResult = ''

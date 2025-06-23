@@ -27,6 +27,8 @@
       <th>Reporting</th>
       <th>Role Type</th>
       <th>Action</th>
+      <th>Update In-out Time</th>
+
     </tr>
   </thead>
   <tbody>
@@ -49,7 +51,11 @@
         <button class="btn btn-danger" (click)="delete(emp.id)">
             <i class="fa-solid fa-trash"></i>
         </button>
-
+      </td>
+      <td>
+        <button class="btn btn-primary" (click)="onUpdateClick(emp)">
+          <i class="fa-solid fa-pen-to-square"></i>
+        </button>
       </td>
     </tr>
   </tbody>
@@ -71,3 +77,6 @@
     <app-reg-employee [data]="this.employeedata" />
   </div>
 </ng-template>
+
+
+<app-update-inout-time ></app-update-inout-time>
