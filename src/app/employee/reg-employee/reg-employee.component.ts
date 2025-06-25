@@ -2,13 +2,13 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-reg-employee',
-  imports: [FormsModule,CommonModule,ReactiveFormsModule,HttpClientModule],
+  imports: [FormsModule,CommonModule,ReactiveFormsModule,HttpClientModule,RouterModule],
   standalone:true,
   providers:[DatePipe],
   templateUrl: './reg-employee.component.html',
@@ -19,6 +19,7 @@ export class RegEmployeeComponent implements OnInit {
   @Input() data: any
 
   employeeForm!: FormGroup;
+  isFormSubmitted = false;
 
   departments: any[] = [];
   reporting : any[] = [];
@@ -123,6 +124,7 @@ export class RegEmployeeComponent implements OnInit {
       {
         if(this.employeeForm.valid)
           {
+            this.isFormSubmitted = true;
             this.http.post("https://localhost:7124/api/Employee", this.employeeForm.value)
             .subscribe((res:any) =>
             Swal.fire("Record Save Successfully!"));

@@ -4,7 +4,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EmployeeService } from '../employee.service';
 import Swal from 'sweetalert2';
-
 @Component({
   selector: 'app-update-inout-time',
   imports: [CommonModule,ReactiveFormsModule],
@@ -31,7 +30,6 @@ export class UpdateInoutTimeComponent implements OnInit{
   }
 
   showForm: boolean = false;
-
   updateTime(){
     this.employeeService.selectedInOutTime.subscribe((emp : any) => {
       if (emp) {
@@ -41,9 +39,6 @@ export class UpdateInoutTimeComponent implements OnInit{
     });
   }
 
-
-   
- 
   result: string = '';
   calculateTotalHrs()
   {
@@ -76,8 +71,9 @@ export class UpdateInoutTimeComponent implements OnInit{
 
   onSubmit() {
     const emp = this.employeeForm.value;
-    this.http.put(`https://localhost:7124/api/Employee/${emp.id}`, emp).subscribe((res) => {
+    this.http.put(`https://localhost:7124/api/Employee/InTimeUpdate/${emp.id}`, emp).subscribe((res) => {
       Swal.fire("Record Update Successfully!")
+      this.employeeForm.reset();
     });
   }
 
