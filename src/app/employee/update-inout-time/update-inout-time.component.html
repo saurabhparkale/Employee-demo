@@ -1,10 +1,13 @@
-<div class="container">
-    <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()" *ngIf="showForm">
+<div class="container w-50 box" *ngIf="showForm">
+
+    <h3 style="text-align: center;">Update In Out Time</h3>
+
+    <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
 
         <div class="row">
             <div class="col-md-6">
                 <label >Name</label>
-                <input type="text" class="form-control"  formControlName="name" />        
+                <input type="text" class="form-control"  formControlName="name" readonly/>        
             </div>
         </div>
 
